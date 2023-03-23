@@ -30,7 +30,7 @@ ETH_KEY=<Private key of deployer wallet>
 ETHERSCAN_API_KEY=<Etherscan api key for smart contract verification>
 ```
 4. Run `npx hardhat run scripts/deploy.js --network ethereum` to deploy the contract to ethereum. 
-   (You can run `npx hardhat run scripts/deploy.js --network ethereum` to deploy on goerli testnet.)
+   (You can run `npx hardhat run scripts/deploy.js --network goerli` to deploy on goerli testnet.)
 
 ## Upgrade
 
