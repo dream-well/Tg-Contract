@@ -47,13 +47,13 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
 
     using SafeMath for uint;
 
-    uint liquidity_tax;
-    uint marketing_tax;
-    address marketing_wallet;
-    IUniswapV2Router02 uniswapV2Router;
+    uint public liquidity_tax;
+    uint public marketing_tax;
+    address public marketing_wallet;
+    IUniswapV2Router02 public uniswapV2Router;
     address uniswapV2Pair;
 
-    mapping(address => bool) is_tax_excluded;
+    mapping(address => bool) public is_tax_excluded;
 
     function init(string memory name_, string memory symbol_, IUniswapV2Router02 uniswapV2Router_) external initializer {
         __ERC20_init(name_, symbol_);
@@ -178,5 +178,9 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
 
     function _burn(address account, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
         super._burn(account, amount);
+    }
+
+    function set_tax_excluded(address account, bool flag) external onlyOwner {
+        is_tax_excluded[account] = flag;
     }
 }
