@@ -29,9 +29,10 @@ This project deploys the TGERC20 smart contract on the Ethereum blockchain. The 
 ETH_KEY=<Private key of deployer wallet>
 ETHERSCAN_API_KEY=<Etherscan api key for smart contract verification>
 ```
-4. Run `npx hardhat run scripts/deploy.js --network ethereum` to deploy the contract to ethereum. 
+2. Run `npx hardhat run scripts/deploy.js --network ethereum` to deploy the contract to ethereum. 
    (You can run `npx hardhat run scripts/deploy.js --network goerli` to deploy on goerli testnet.)
-
+3. Verify newly deployed smart contract.
+   Run `npx hardhat verify <Smart Contract Address> --network goerli`
 ## Upgrade
 
 Run `npx hardhat upgrade --address <Smart Contract Address Here> --network ethereum`

@@ -99,7 +99,6 @@ module.exports = {
   etherscan: {
     apiKey: {
       bsc: process.env.ETHERSCAN_API_KEY,
-      ethereum: process.env.ETHERSCAN_API_KEY,
       goerli: process.env.ETHERSCAN_API_KEY
     },
   },
