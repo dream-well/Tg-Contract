@@ -13,7 +13,23 @@ task("upgrade", "Upgrade smart contract")
   .setAction(async (taskArguments, hre, runSuper) => {
     await hre.upgrades.upgradeProxy(taskArguments.address, (await ethers.getContractFactory("TGERC20")));
     console.log("Successfully upgraded");
-  });
+});
+
+task("deploy", "Deploy smart contract")
+  .addParam("name", "token name")
+  .addParam("symbol", "token symbol")
+  .addParam("uniswapv2", "uniswapv2 router address")
+  .setAction(async (taskArguments, hre, runSuper) => {
+    const contract = await hre.upgrades.deployProxy(await ethers.getContractFactory("TGERC20"), 
+    [
+      taskArguments.name,
+      taskArguments.symbol,
+      taskArguments.uniswapv2
+    ], { initializer: 'init'});
+    await contract.deployed();
+  
+    console.log("Contract deployed to:", contract.address);
+});
 
 
 // This is a sample Hardhat task. To learn how to create your own go to
