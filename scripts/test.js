@@ -16,22 +16,19 @@ void async function main() {
     ["TiGer Token", "TG", uniswapRouterAddress], { initializer: 'init'});
     let tx = await token.deployed();
 
-    // await expect(tx)
-    //         .to.emit(factory, "PairCreated")
-    
     await token.set_marketing_wallet(marketing_wallet.address);
 
     let amountIn = ethers.utils.parseUnits("600000000", 18)
     let ethAmount = ethers.utils.parseUnits("10", 18);
-    tx = await token.approve(routerAddr, amountIn);
+    tx = await token.approve(uniswapRouterAddress, amountIn);
     await tx.wait();
     
+    const router02Contract = await ethers.getContractAt(IUniswapV2Router02, uniswapRouterAddress)
     let deadline = parseInt(Date.now() / 1000 + 120);
     tx = await router.addLiquidityETH(tokenAddr, amountIn, amountIn, ethAmount, owner.address, deadline, {value: ethAmount})
     await tx.wait();
 
 
-    const router02Contract = await ethers.getContractAt(IUniswapV2Router02, uniswapRouterAddress)
     
     // Transfer to wallet1
     tx = await token.transfer(wallet1.address, ethers.utils.parseUnits("10000", 18));
@@ -51,7 +48,8 @@ void async function main() {
     deadline = parseInt(Date.now() / 1000 + 120);
     tx = await router02Contract.swapExactTokensForETHSupportingFeeOnTransferTokens(ethers.utils.parseUnits("10000", 18), 0, [token.address, wethAddress], owner.address, deadline);
     await tx.wait();
-    
+
+    totalSupply = await uniswapV2Pair.totalSupply();
     console.log("liquidity supply after token swap:", ethers.utils.formatEther(totalSupply));
     // tx = token.transfer(wallet1, ethers.utils.parseUnits("10000", 18));
     tx = await token.pause();
@@ -81,4 +79,4 @@ void async function main() {
         [transferCalldata],
         descriptionHash,
     );
-}
+}()
