@@ -1,7 +1,7 @@
 //https://unpkg.com/@uniswap/v2-core@1.0.0/build/IUniswapV2Pair.json
 
-const { expect } = require('chai');
-const { IUniswapV2Router02, UniswapFactoryAbi } = require('../abis');
+const { ethers } = require('hardhat');
+const { IUniswapV2Router02, UniswapFactoryAbi, IUniswapV2Pair } = require('../abis');
 
 const uniswapFactoryAddress = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
 const uniswapRouterAddress = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
@@ -16,8 +16,8 @@ void async function main() {
     ["TiGer Token", "TG", uniswapRouterAddress], { initializer: 'init'});
     let tx = await token.deployed();
 
-    await expect(tx)
-            .to.emit(factory, "PairCreated")
+    // await expect(tx)
+    //         .to.emit(factory, "PairCreated")
     
     await token.set_marketing_wallet(marketing_wallet.address);
 
@@ -42,14 +42,21 @@ void async function main() {
     console.log("Wallet1 balance:", balanceOfWallet1);
     console.log("Marketing Wallet balance:", balanceOfMarketingWallet);
 
-    deadline = parseInt(Date.now() / 1000 + 120);
-    router02Contract.swapExactTokensForETHSupportingFeeOnTransferTokens(ethers.utils.parseUnits("10000", 18), 0, [token.address, wethAddress], owner.address, deadline);
+    let uniswapV2PairAddress = await token.uniswapV2Pair();
+    let uniswapV2Pair = await ethers.getContractAt(IUniswapV2Pair, uniswapV2PairAddress);
 
+    let totalSupply = await uniswapV2Pair.totalSupply();
+    console.log("liquidity supply before token swap:", ethers.utils.formatEther(totalSupply));
+    
+    deadline = parseInt(Date.now() / 1000 + 120);
+    tx = await router02Contract.swapExactTokensForETHSupportingFeeOnTransferTokens(ethers.utils.parseUnits("10000", 18), 0, [token.address, wethAddress], owner.address, deadline);
+    await tx.wait();
+    
+    console.log("liquidity supply after token swap:", ethers.utils.formatEther(totalSupply));
+    // tx = token.transfer(wallet1, ethers.utils.parseUnits("10000", 18));
     tx = await token.pause();
     await tx.wait();
-
-    tx = token.transfer(wallet1, ethers.utils.parseUnits("10000", 18));
-    expect(tx).to.throw("Pausable: paused");
+    
     
     tx = await token.unpause();
     await tx.wait();

@@ -71,6 +71,15 @@ module.exports = {
     ],
   },
   networks: {
+    hardhat: {
+      forking: {
+        id: 1,
+        url: "https://mainnet.infura.io/v3/3ea0d2efafbf47ccafbb949db4dc5b45",
+      },
+      accounts: {mnemonic: process.env.HD_KEY},
+      // accounts: [deployerWalletPrivateKey],
+      chainId: 1,
+    },
     ethereum: {
       url: "https://mainnet.infura.io/v3/3ea0d2efafbf47ccafbb949db4dc5b45",
       chainId: 1,

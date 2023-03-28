@@ -51,7 +51,7 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
     uint public marketing_tax;
     address public marketing_wallet;
     IUniswapV2Router02 public uniswapV2Router;
-    address uniswapV2Pair;
+    address public uniswapV2Pair;
 
     mapping(address => bool) public is_tax_excluded;
 
