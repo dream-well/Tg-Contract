@@ -362,7 +362,13 @@ allowance: 1000
 ```js
   const to = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
   const amount = ethers.utils.parseUnits("1000", 18);
-  await contract.transfer(to, amount) ;
+  await contract.transfer(to, amount);
+  console.log("destination balance:", ethers.utils.formatEther(await contract.balanceOf(to)));
+```
+
+Output
+```
+destination balance: 1000
 ```
 
 - transferFrom
@@ -370,23 +376,41 @@ allowance: 1000
   const from = "0xe33FB94588ED193CA42a754992a6Fa2688d3Fcfe";
   const to = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
   const amount = ethers.utils.parseUnits("1000", 18);
-  await contract.transferFrom(from, to, amount) ;
+  await contract.transferFrom(from, to, amount);
+  console.log("destination balance:", ethers.utils.formatEther(await contract.balanceOf(to)));
+```
+
+Output
+```
+destination balance: 1000
 ```
 
 - increaseAllowance
 ```js
   const spender = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
   const amount = ethers.utils.parseUnits("1000", 18);
+  console.log("allowance before:", ethers.utils.formatEther(await contract.allowance(owner.address, spender)));
   await contract.increaseAllowance(spender, amount) ;
+  console.log("allowance after:", ethers.utils.formatEther(await contract.allowance(owner.address, spender)));
 ```
 
+```sh
+allowance before: 0.0
+allowance after: 1000.0
+```
 - decreaseAllowance
 ```js
   const spender = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
   const amount = ethers.utils.parseUnits("1000", 18);
-  await contract.decreaseAllowance(spender, amount) ;
+  console.log("allowance before:", ethers.utils.formatEther(await contract.allowance(owner.address, spender)));
+  await contract.decreaseAllowance(spender, amount);
+  console.log("allowance after:", ethers.utils.formatEther(await contract.allowance(owner.address, spender)));
 ```
 
+```sh
+allowance before: 1000.0
+allowance after: 0.0
+```
 
 <h3>Ownable</h3>
 

@@ -55,7 +55,6 @@ void async function main() {
     tx = await token.pause();
     await tx.wait();
     
-    
     tx = await token.unpause();
     await tx.wait();
     tx = await token.transfer(wallet1, ethers.utils.parseUnits("10000", 18));
