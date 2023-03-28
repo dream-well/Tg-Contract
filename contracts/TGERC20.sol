@@ -129,7 +129,7 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
     
     }
 
-    function addLiquidity() public {
+    function addLiquidity() internal {
         // approve token transfer to cover all possible scenarios
         swapTokensForEth(balanceOf(address(this)).div(2));
         // add the liquidity
