@@ -12,12 +12,14 @@ ETHERSCAN_API_KEY=<Etherscan api key for smart contract verification>
 ```
 2. To deploy the contract to ethereum:
 ```sh
+npx hardhat compile
 npx hardhat deploy --name <Token Name> --symbol <Token Symbol> --uniswapv2 <UniswapV2 Router Address> --network <network>
 ```
 Example input and output:
 
 Input
 ```sh
+npx hardhat compile
 npx hardhat deploy --name "Tiger Token" --symbol "TG" --uniswapv2 "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D" --network goerli
 ```
 
