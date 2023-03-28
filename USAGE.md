@@ -1,3 +1,5 @@
+# Environment
+Node.js 16.17.1
 # Installation
 
 1. Clone this repository using `git clone https://github.com/utilarchy/aicd`

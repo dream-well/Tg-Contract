@@ -1,3 +1,5 @@
+# Environment
+Node.js 16.17.1
 # Hardhat TGERC20
 
 This project deploys the TGERC20 smart contract on the Ethereum blockchain. The contract is upgradeable and has an upgrade script.
