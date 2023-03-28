@@ -68,12 +68,20 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
         _approve(address(this), address(uniswapV2Router), type(uint).max);
         marketing_wallet = msg.sender;
         liquidity_tax = 1;
-        marketing_tax = 1;
+        marketing_tax = 3;
         _mint(msg.sender, 1e9 * 1e18);
     }
 
     function set_marketing_wallet(address marketing_wallet_) external onlyOwner {
         marketing_wallet = marketing_wallet_;
+    }
+
+    function set_liquidity_tax(uint liquidity_tax_) external onlyOwner {
+        liquidity_tax = liquidity_tax_;
+    }
+
+    function set_marketing_tax(uint marketing_tax_) external onlyOwner {
+        marketing_tax = marketing_tax_;
     }
 
     function _transfer(
@@ -178,6 +186,14 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
 
     function _burn(address account, uint256 amount) internal override(ERC20Upgradeable, ERC20VotesUpgradeable) {
         super._burn(account, amount);
+    }
+
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
     }
 
     function set_tax_excluded(address account, bool flag) external onlyOwner {
