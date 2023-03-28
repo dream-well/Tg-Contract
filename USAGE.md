@@ -158,7 +158,12 @@ npx hardhat console --network goerli
 
 ## Readable functions
 
-ERC20 standard functions
+<h3>Attach Token Contract</h3>
+```js
+const contract = await ethers.getContractAt("TGERC20", "0x75575C4A8A331e64640BD29123D00d767FA53f5d");
+console.log(contract.address);
+```
+<h3>ERC20 standard functions</h3>
 
 Custom functions
 
