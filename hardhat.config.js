@@ -87,25 +87,25 @@ module.exports = {
     ethereum: {
       url: "https://mainnet.infura.io/v3/3ea0d2efafbf47ccafbb949db4dc5b45",
       chainId: 1,
-      accounts: process.env.ETH_KEY !== undefined ? [process.env.ETH_KEY] : [],
+      accounts: {mnemonic: process.env.HD_KEY},
       
     },
     goerli: {
       url: "https://goerli.infura.io/v3/3ea0d2efafbf47ccafbb949db4dc5b45",
       chainId: 5,
-      accounts: process.env.ETH_KEY !== undefined ? [process.env.ETH_KEY] : [],
+      accounts: {mnemonic: process.env.HD_KEY},
       
     },
     bsctestnet: {
       url: "https://rpc.ankr.com/bsc_testnet_chapel",
       chainId: 97,
-      accounts: process.env.ETH_KEY !== undefined ? [process.env.ETH_KEY] : [],
+      accounts: {mnemonic: process.env.HD_KEY},
       
     },
     bscmainnet: {
       url: "https://bsc-dataseed1.ninicoin.io",
       chainId: 56,
-      accounts: process.env.ETH_KEY !== undefined ? [process.env.ETH_KEY] : [],
+      accounts: {mnemonic: process.env.HD_KEY},
       
     }
   },

@@ -9,7 +9,7 @@ Node.js 16.17.1
 
 1. Configure .env file
 ```
-ETH_KEY=<Private key of deployer wallet>
+HD_KEY=<Mnemonic Phrases>
 ETHERSCAN_API_KEY=<Etherscan api key for smart contract verification>
 ```
 2. To deploy the contract to ethereum:
@@ -499,6 +499,10 @@ Returns true if the contract is paused, and false otherwise.
   await contract.unpause() ;
   console.log("paused:", await contract.paused());
 ```
+
+# Run Script
+1. Run `npx hardhat run scripts/test.js --network hardhat` to run script on hardhat (ethereum fork). 
+(You can run `npx hardhat run scripts/deploy.js --network goerli` to run on goerli testnet. But it consumes much gas fees)
 
 # License
 
