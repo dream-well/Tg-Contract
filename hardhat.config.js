@@ -15,6 +15,8 @@ task("deploy", "Deploy smart contract")
   .addParam("symbol", "token symbol")
   .addParam("uniswapv2", "uniswapv2 router address")
   .setAction(async (taskArguments, hre, runSuper) => {
+    const [owner] = await hre.ethers.getSigners();
+    console.log("deployer:", owner.address);
     const contract = await hre.upgrades.deployProxy(await ethers.getContractFactory("TGERC20"), 
     [
       taskArguments.name,

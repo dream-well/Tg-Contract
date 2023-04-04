@@ -21,7 +21,7 @@ const VoteType = {
 void async function main() {
 
     const [owner, wallet1, wallet2, teamwallet, marketing_wallet] = await ethers.getSigners()
-    
+    console.log("deployer:", owner.address);
     const factory = await ethers.getContractAt(UniswapFactoryAbi, uniswapFactoryAddress)
     const token = await hre.upgrades.deployProxy(await ethers.getContractFactory("TGERC20"), 
     ["TiGer Token", "TG", uniswapRouterAddress], { initializer: 'init'});
