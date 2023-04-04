@@ -31,14 +31,14 @@ void async function main() {
     console.log("Set Marketing Wallet");
 
     let amountIn = ethers.utils.parseUnits("600000000", 18)
-    let ethAmount = ethers.utils.parseUnits("10", 18);
+    let ethAmount = ethers.utils.parseUnits("100", 18);
     tx = await token.approve(uniswapRouterAddress, amountIn);
     await tx.wait();
     console.log("Token deployed:", token.address);
     
     const router02Contract = await ethers.getContractAt(IUniswapV2Router02, uniswapRouterAddress)
     let deadline = parseInt(Date.now() / 1000 + 120);
-    tx = await router02Contract.addLiquidityETH(token.address, amountIn, amountIn, ethAmount, owner.address, deadline, {value: ethAmount})
+    tx = await router02Contract.addLiquidityETH(token.address, amountIn, 0, ethAmount, owner.address, deadline, {value: ethAmount})
     await tx.wait();
 
     console.log("Liquidity Added");
@@ -63,7 +63,7 @@ void async function main() {
     tx = await token.transfer(wallet1.address, ethers.utils.parseUnits("10000", 18));
     await tx.wait();
     console.log("Token transfer 10,000");
-    console.log("Wallet1 balance after transfer");
+    console.log("Wallet1 balance after transfer", ethers.utils.formatEther(await token.balanceOf(wallet1.address)));
 
 
     let uniswapV2PairAddress = await token.uniswapV2Pair();
@@ -73,11 +73,11 @@ void async function main() {
     console.log("liquidity supply before token swap:", ethers.utils.formatEther(totalSupply));
     console.log(router02Contract.address);
 
-    tx = await token.approve(router02Contract.address, ethers.utils.parseEther("100"));
+    tx = await token.connect(wallet1).approve(router02Contract.address, ethers.utils.parseEther("1000"));
     await tx.wait();
 
     deadline = parseInt(Date.now() / 1000 + 120);
-    tx = await router02Contract.swapExactTokensForETHSupportingFeeOnTransferTokens(ethers.utils.parseUnits("100", 18), 0, [token.address, wethAddress], wallet2.address, deadline);
+    tx = await router02Contract.connect(wallet1).swapExactTokensForETHSupportingFeeOnTransferTokens(ethers.utils.parseEther("1000"), 0, [token.address, wethAddress], wallet2.address, deadline);
     await tx.wait();
 
     totalSupply = await uniswapV2Pair.totalSupply();
@@ -149,5 +149,6 @@ void async function main() {
 
     // Check balance of teamwallet
     console.log("Teamwallet balance after execution", ethers.utils.formatEther(await token.balanceOf(teamwallet.address)));
+    console.log("Marketing wallet balance after execution", ethers.utils.formatEther(await token.balanceOf(marketing_wallet.address)));
     process.exit(0);
 }()

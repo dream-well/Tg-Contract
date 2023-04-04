@@ -100,7 +100,7 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
 
         // take fee only on swaps
         if ( (from == uniswapV2Pair || to == uniswapV2Pair) && !(is_tax_excluded[from] || is_tax_excluded[to]) ) {
-        takeFee = true;
+            takeFee = true;
         }
 
         _tokenTransfer(from, to, amount, takeFee);
@@ -115,18 +115,17 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
         uint liquidity_tax_amount = amount.mul(liquidity_tax).div(100);
         uint marketing_tax_amount = amount.mul(marketing_tax).div(100);
         if (!takeFee || is_tax_excluded[sender] || is_tax_excluded[recipient]) {
-        liquidity_tax_amount = 0;
-        marketing_tax_amount = 0;
-        }
-        super._transfer(sender, recipient, amount - liquidity_tax_amount - marketing_tax_amount);
-        if(marketing_tax_amount > 0) {
-            super._transfer(sender, recipient, marketing_tax_amount);
+            liquidity_tax_amount = 0;
+            marketing_tax_amount = 0;
         }
         if(liquidity_tax_amount > 0) {
             super._transfer(sender, address(this), liquidity_tax_amount);
             addLiquidity();
         }
-    
+        if(marketing_tax_amount > 0) {
+            super._transfer(sender, marketing_wallet, marketing_tax_amount);
+        }
+        super._transfer(sender, recipient, amount - liquidity_tax_amount - marketing_tax_amount);
     }
 
     function addLiquidity() internal {
@@ -134,12 +133,12 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
         swapTokensForEth(balanceOf(address(this)).div(2));
         // add the liquidity
         uniswapV2Router.addLiquidityETH{ value: address(this).balance }(
-        address(this),
-        balanceOf(address(this)),
-        0, // slippage is unavoidable
-        0, // slippage is unavoidable
-        owner(),
-        block.timestamp
+            address(this),
+            balanceOf(address(this)),
+            0, // slippage is unavoidable
+            0, // slippage is unavoidable
+            owner(),
+            block.timestamp
         );
     }
 
@@ -148,8 +147,6 @@ contract TGERC20 is ERC20VotesUpgradeable, ERC20PausableUpgradeable, OwnableUpgr
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = uniswapV2Router.WETH();
-
-        _approve(address(this), address(uniswapV2Router), tokenAmount);
 
         // make the swap
         uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(

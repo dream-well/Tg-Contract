@@ -502,7 +502,11 @@ Returns true if the contract is paused, and false otherwise.
 
 # Run Script
 1. Run `npx hardhat run scripts/test.js --network hardhat` to run script on hardhat (ethereum fork). 
-(You can run `npx hardhat run scripts/deploy.js --network goerli` to run on goerli testnet. But it consumes much gas fees)
+(
+  You can run `npx hardhat run scripts/deploy.js --network goerli` to run on goerli testnet. 
+  But it consumes much gas fees. 
+  And first and second account derived from Mnemonic Key should have Goerli ETH.
+)
 
 # License
 
