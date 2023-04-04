@@ -78,6 +78,10 @@ module.exports = {
       },
       accounts: {mnemonic: process.env.HD_KEY},
       // accounts: [deployerWalletPrivateKey],
+      mining: {
+        auto: true,
+        interval: 20,
+      },
       chainId: 1,
     },
     ethereum: {
